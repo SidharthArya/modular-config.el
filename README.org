@@ -4,7 +4,7 @@
 Organize your emacs config into modules. 
 
 * Basic Usage
-Make sure the modules.el file is in your ~load-path~
+Make sure the folder containing modules.el file is in your ~load-path~
   #+begin_src emacs-lisp
     (require 'modules)
     (setq modules-config-list '(
