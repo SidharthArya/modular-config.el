@@ -1,0 +1,25 @@
+#+TITLE: Modules.el
+#+AUTHOR: Sidharth Arya
+
+Organize your emacs config into modules. 
+
+* Basic Usage
+Make sure the modules.el file is in your ~load-path~
+  #+begin_src emacs-lisp
+    (require 'modules)
+    (setq modules-config-list '(
+				(none ())
+				(minimal (compile core appearance packages vi))
+				(news (compile core appearance packages mount mail ivy news org))
+				(programming (compile core appearance packages vi ivy mount org programming vc))
+				(org (compile core appearance packages vi ivy mount org server compile dashboard))
+				(main (compile core appearance packages programming vi mount org news mail dashboard vc tracking finance server))
+				))
+
+
+	    (setq modules-config-default 'main)
+	  (setq modules-path "~/.emacs.d/lisp")
+  #+end_src
+
+Modules can also be loaded interactively by using the ~modules-load~ function. This actually can save you a lot of hassle when debugging certain packages. 
+ 
