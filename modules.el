@@ -1,4 +1,4 @@
-;; modules.el  -- Organize your emacs config into small, manageable and loadable modules -*- lexical-binding: t; -*-
+;; modules.el  --- Organize your emacs config into small, manageable and loadable modules -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 Sidharth Arya
 
@@ -6,7 +6,8 @@
 ;; Maintainer: Sidharth Arya <sidhartharya10@gmail.com>
 ;; Created: 28 May 2020
 ;; Version: 0.1
-;; Keywords: Organize your emacs config into small, manageable and loadable modules
+;; Package-Requires: ((emacs "24.3")) 
+;; Keywords: startup
 ;; URL: https://github.com/SidharthArya/modules.el
 
 ;; This program is free software; you can redistribute it and/or modwheny
@@ -44,12 +45,12 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
   :group 'modules
   :type 'symbol)
 
-(defcustom modules-path "~/.emacs.d/lisp"
+(defcustom modules-path (concat user-emacs-directory "lisp")
   "Path where all the modules are located."
   :group 'modules
   :type 'string)
 
-(defun command-line-args-process ()
+(defun modules-command-line-args-process ()
   "Process the command line arguments.
 Use: 'emacs --config none --modules \"list of modules\"' from the command line"
   (interactive)
@@ -76,7 +77,7 @@ Use: 'emacs --config none --modules \"list of modules\"' from the command line"
       (setq config (symbol-name modules-config-default)))
     (modules-process (intern config))
     (when modules
-      (modules-load (mapcar 'intern (split-string modules))))))
+      (modules-load (mapcar #'intern (split-string modules))))))
 
 (defun modules-process (arg)
   "Processing various modules from the cli.
@@ -93,8 +94,8 @@ ARG is the selected modules config."
 MODULES is the list of modules to be loaded.
 When not speced, the function would ask for a space separated list of modules."
   (interactive)
-  (when (not modules)
-    (setq modules (mapcar 'intern (split-string (read-string "Modules: ")))))
+  (unless modules
+    (setq modules (mapcar #'intern (split-string (read-string "Modules: ")))))
   (dolist (module modules)
     (load (concat modules-path "/" (symbol-name module)))
     (message "[Module]: %s" (symbol-name module))))
