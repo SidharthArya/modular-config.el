@@ -1,4 +1,4 @@
-;; modules.el  -- Organize your emacs config into small, manageable and loadable modules
+;; modules.el  -- Organize your emacs config into small, manageable and loadable modules -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 Sidharth Arya
 
@@ -9,7 +9,7 @@
 ;; Keywords: Organize your emacs config into small, manageable and loadable modules
 ;; URL: https://github.com/SidharthArya/modules.el
 
-;; This program is free software; you can redistribute it and/or modify
+;; This program is free software; you can redistribute it and/or modwheny
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2 of the License, or (at
 ;; your option) any later version.
@@ -20,22 +20,20 @@
 ;; General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
+;; along with this program; when not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 ;; USA.
 
 ;;; Commentary:
 
-;; modules.el package allows you to create custom configurations from .el files contained in a specific folder.
+;; modules.el package allows you to create custom configurations from .el files contained in a specwhenic folder.
 ;; These .el files can be loaded when needed using `modules-load` function.
 ;; Or it can be loaded from the cli as `emacs --modules "space separated list of modules".
-;; You can also specify module configurations
+;; You can also specwheny module configurations
 
 ;;; Code:
 
-(defcustom modules-config-list '(
-				 (none ())
-				 )
+(defcustom modules-config-list '((none ()))
   "List of module configs in the format: (module-config (list of modules))
 Use (add-to-list 'modules-config-list '(main (core appearance)))"
   :group 'modules
@@ -53,56 +51,53 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
 
 (defun command-line-args-process ()
   "Process the command line arguments.
-Use emacs --config none --modules \"list of modules\""
+Use: 'emacs --config none --modules \"list of modules\"' from the command line"
   (interactive)
   (let ((config nil)
-	(modules nil))
+        (modules nil))
     (dolist (it command-line-args)
-      (if (equal it "--config")
-	  (progn
-	    (setq command-line-args (delete it command-line-args))
-	    (setq config t))
-	(if (equal config t)
-	    (progn
-	      (setq config it)
-	      (setq command-line-args (delete it command-line-args)))))
-      (if (equal it "--modules")
-	  (progn
-	    (setq command-line-args (delete it command-line-args))
-	    (setq modules t))
-	(if (equal modules t)
-	    (progn
-	      (setq modules it)
-	      (setq command-line-args (delete it command-line-args))))))
-    (if (equal config nil)
-	(setq config (symbol-name modules-config-default)))
+      (when (equal it "--config")
+        (progn
+          (setq command-line-args (delete it command-line-args))
+          (setq config t))
+        (when (equal config t)
+          (progn
+            (setq config it)
+            (setq command-line-args (delete it command-line-args)))))
+      (when (equal it "--modules")
+        (progn
+          (setq command-line-args (delete it command-line-args))
+          (setq modules t))
+        (when (equal modules t)
+          (progn
+            (setq modules it)
+            (setq command-line-args (delete it command-line-args))))))
+    (when (equal config nil)
+      (setq config (symbol-name modules-config-default)))
     (modules-process (intern config))
-    (if modules
-	(modules-load (mapcar 'intern (split-string modules))))))
+    (when modules
+      (modules-load (mapcar 'intern (split-string modules))))))
 
 (defun modules-process (arg)
   "Processing various modules from the cli.
 ARG is the selected modules config."
   (let ((modules nil))
     (dolist (it modules-config-list)
-      (if (equal (car it) arg)
-	  (setq modules (car (cdr it)))))
-    (if modules
-	(modules-load modules))
-    ))
+      (when (equal (car it) arg)
+        (setq modules (car (cdr it)))))
+    (when modules
+      (modules-load modules))))
 
 (defun modules-load (&optional modules)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
-If not specified, the function would ask for a space separated list of modules."
+When not speced, the function would ask for a space separated list of modules."
   (interactive)
-  (if (not modules)
-      (setq modules (mapcar 'intern (split-string (read-string "Modules: ")))))
-  (dolist
-      (module modules)
+  (when (not modules)
+    (setq modules (mapcar 'intern (split-string (read-string "Modules: ")))))
+  (dolist (module modules)
     (load (concat modules-path "/" (symbol-name module)))
-    (message "[Module]: %s" (symbol-name module))
-    ))
+    (message "[Module]: %s" (symbol-name module))))
 
 (provide 'modules)
 ;;; modules.el ends here
