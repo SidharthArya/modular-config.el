@@ -6,7 +6,7 @@
 ;; Maintainer: Sidharth Arya <sidhartharya10@gmail.com>
 ;; Created: 28 May 2020
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24.3")) 
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: startup
 ;; URL: https://github.com/SidharthArya/modules.el
 
@@ -101,4 +101,5 @@ When not speced, the function would ask for a space separated list of modules."
     (message "[Module]: %s" (symbol-name module))))
 
 (provide 'modules)
+
 ;;; modules.el ends here

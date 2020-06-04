@@ -17,7 +17,7 @@ Make sure the folder containing modules.el file is in your ~load-path~.
 		       ))
     (setq modules-config-default 'main)
     (setq modules-path "~/.emacs.d/lisp")
-  (command-line-args-process)
+  (modules-command-line-args-process)
 #+end_src
 ** Use Package
  If you already use ~use-package~. Then, the config below works, although this package is not yet part of melpa so, either have it manually be in the ~load-path~, or use straight.el.
@@ -35,7 +35,7 @@ Make sure the folder containing modules.el file is in your ~load-path~.
     (modules-config-default 'main)
     (modules-path "~/.emacs.d/lisp")
     :config
-    (command-line-args-process))
+    (modules-command-line-args-process))
   #+end_src
 Modules can also be loaded interactively by using the ~modules-load~ function.
 
