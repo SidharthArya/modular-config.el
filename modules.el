@@ -1,4 +1,4 @@
-;; modules.el  --- Organize your emacs config into small, manageable and loadable modules -*- lexical-binding: t; -*-
+;;; modules.el --- Organize your emacs config into small and loadable modules -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 Sidharth Arya
 
@@ -27,7 +27,7 @@
 
 ;;; Commentary:
 
-;; modules.el package allows you to create custom configurations from .el files contained in a specwhenic folder.
+;; modules.el package allows you to create custom configurations from .el files contained in a specific folder.
 ;; These .el files can be loaded when needed using `modules-load` function.
 ;; Or it can be loaded from the cli as `emacs --modules "space separated list of modules".
 ;; You can also specwheny module configurations
