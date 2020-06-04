@@ -51,8 +51,7 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
   :type 'string)
 
 (defun modules-command-line-args-process ()
-  "Process the command line arguments.
-Use: 'emacs --config none --modules \"list of modules\"' from the command line"
+  "Process the command line arguments."
   (interactive)
   (let ((config nil)
         (modules nil))
