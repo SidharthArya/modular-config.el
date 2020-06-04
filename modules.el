@@ -10,7 +10,7 @@
 ;; Keywords: startup
 ;; URL: https://github.com/SidharthArya/modules.el
 
-;; This program is free software; you can redistribute it and/or modwheny
+;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 2 of the License, or (at
 ;; your option) any later version.
@@ -21,16 +21,16 @@
 ;; General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; when not, write to the Free Software
+;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 ;; USA.
 
 ;;; Commentary:
 
 ;; modules.el package allows you to create custom configurations from .el files contained in a specific folder.
-;; These .el files can be loaded when needed using `modules-load` function.
+;; These .el files can be loaded if needed using `modules-load` function.
 ;; Or it can be loaded from the cli as `emacs --modules "space separated list of modules".
-;; You can also specwheny module configurations
+;; You can also specify module configurations
 
 ;;; Code:
 
@@ -57,26 +57,26 @@ Use: 'emacs --config none --modules \"list of modules\"' from the command line"
   (let ((config nil)
         (modules nil))
     (dolist (it command-line-args)
-      (when (equal it "--config")
+      (if (equal it "--config")
         (progn
           (setq command-line-args (delete it command-line-args))
           (setq config t))
-        (when (equal config t)
+        (if (equal config t)
           (progn
             (setq config it)
             (setq command-line-args (delete it command-line-args)))))
-      (when (equal it "--modules")
+      (if (equal it "--modules")
         (progn
           (setq command-line-args (delete it command-line-args))
           (setq modules t))
-        (when (equal modules t)
+        (if (equal modules t)
           (progn
             (setq modules it)
             (setq command-line-args (delete it command-line-args))))))
-    (when (equal config nil)
+    (if (equal config nil)
       (setq config (symbol-name modules-config-default)))
     (modules-process (intern config))
-    (when modules
+    (if modules
       (modules-load (mapcar #'intern (split-string modules))))))
 
 (defun modules-process (arg)
@@ -84,17 +84,17 @@ Use: 'emacs --config none --modules \"list of modules\"' from the command line"
 ARG is the selected modules config."
   (let ((modules nil))
     (dolist (it modules-config-list)
-      (when (equal (car it) arg)
+      (if (equal (car it) arg)
         (setq modules (car (cdr it)))))
-    (when modules
+    (if modules
       (modules-load modules))))
 
 (defun modules-load (&optional modules)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
-When not speced, the function would ask for a space separated list of modules."
+If not speced, the function would ask for a space separated list of modules."
   (interactive)
-  (unless modules
+  (if (not modules)
     (setq modules (mapcar #'intern (split-string (read-string "Modules: ")))))
   (dolist (module modules)
     (load (concat modules-path "/" (symbol-name module)))
