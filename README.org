@@ -44,3 +44,8 @@ All the different configurations can be accessed from the command line as
 emacs --config none --modules "core appearance vi"
 #+end_src
 
+* Dependencies
+If a module depends on another module for some feature or service, the module can include a line which lists all the modules it needs.
+#+begin_src emacs-lisp
+(modules-load '(space separated list of modules))
+#+end_src

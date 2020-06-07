@@ -50,6 +50,11 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
   :group 'modules
   :type 'string)
 
+(defcustom modules-current-modules  '()
+  "Path where all the modules are located."
+  :group 'modules
+  :type 'string)
+
 (defun modules-command-line-args-process ()
   "Process the command line arguments."
   (interactive)
@@ -76,7 +81,7 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
       (setq config (symbol-name modules-config-default)))
     (modules-process (intern config))
     (if modules
-      (modules-load (mapcar #'intern (split-string modules))))))
+      (modules-load (modules-string-to-list modules) 1))))
 
 (defun modules-process (arg)
   "Processing various modules from the cli.
@@ -86,18 +91,32 @@ ARG is the selected modules config."
       (if (equal (car it) arg)
         (setq modules (car (cdr it)))))
     (if modules
-      (modules-load modules))))
+      (modules-load modules 1))))
 
-(defun modules-load (&optional modules)
+(defun modules-string-to-list (module)
+  "Convert provided MODULE from string to list."
+  (mapcar #'intern (split-string module)))
+
+(defun modules-load (modules &optional force)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
-If not speced, the function would ask for a space separated list of modules."
-  (interactive)
-  (if (not modules)
-    (setq modules (mapcar #'intern (split-string (read-string "Modules: ")))))
+If not speced, the function would ask for a space separated list of modules.
+FORCE is a prefix argument."
+  (interactive (list (modules-string-to-list (read-string "Modules: "))
+                     (prefix-numeric-value current-prefix-arg)
+                    ))
+  (message "%s" force)
   (dolist (module modules)
-    (load (concat modules-path "/" (symbol-name module)))
-    (message "[Module]: %s" (symbol-name module))))
+    (let* ((module-name (symbol-name module))
+           (module-full (concat modules-path "/" module-name)))
+      (if (or (equal force 1) (not (member module-name modules-current-modules)))
+          (progn
+          (load module-full)
+          (add-to-list 'modules-current-modules module-name)
+          (message "[Module]: %s" module-name))
+        (message "[Module]: Already loaded %s" module-name)
+        ))))
+
 
 (provide 'modules)
 
