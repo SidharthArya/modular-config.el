@@ -117,7 +117,9 @@ FORCE is a prefix argument."
         (message "[Module]: Already loaded %s" module-name)
         ))))
 
-
+(defun modules-loaded-p (module)
+  (member (symbol-name module) modules-current-modules)
+  )
 (provide 'modules)
 
 ;;; modules.el ends here

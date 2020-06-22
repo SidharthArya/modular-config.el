@@ -51,6 +51,12 @@ If a module depends on another module for some feature or service, the module ca
 #+end_src
 A module will be loaded, only once regardless of how many times it's added within modules-load during startup. But when modules-load is called interactively, it will always load the module again.
 
+If you have a portion of code in one of your code which depends on another module. You can can use a when block to make sure that portion of code is not evaluated if the module is not loaded.
+#+BEGIN_SRC emacs-lisp
+  (when (modules-loaded-p 'module-name)
+    ;; Dependent Code
+    )
+#+END_SRC
 * Example Module
   There are no restrictions at all as to what belongs in your specific module. But if you need to depend on a module you must add (modules-load '(list of modules)).
   
