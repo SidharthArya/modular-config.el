@@ -117,8 +117,16 @@ FORCE is a prefix argument."
         (message "[Module]: Already loaded %s" module-name)
         ))))
 
-(defun modules-loaded-p (module)
-  (member (symbol-name module) modules-current-modules)
+(defun modules-loaded-p (modules)
+  "Check whether a list of MODULES have been loaded."
+  (if (listp modules)
+       (not (member nil (mapcar #'modules-loaded-module-p modules)))
+    (modules-loaded-module-p modules)
+    ))
+
+(defun modules-loaded-module-p (module)
+  "Check whether a MODULE is loaded."
+      (member (symbol-name module) modules-current-modules)
   )
 (provide 'modules)
 
