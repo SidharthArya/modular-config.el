@@ -81,7 +81,7 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
       (setq config (symbol-name modules-config-default)))
     (modules-process (intern config))
     (if modules
-      (modules-load (modules-string-to-list modules) 1))))
+      (modules-load (modules-string-to-list modules)))))
 
 (defun modules-process (arg)
   "Processing various modules from the cli.
@@ -91,7 +91,7 @@ ARG is the selected modules config."
       (if (equal (car it) arg)
         (setq modules (car (cdr it)))))
     (if modules
-      (modules-load modules 1))))
+      (modules-load modules))))
 
 (defun modules-string-to-list (module)
   "Convert provided MODULE from string to list."
@@ -100,11 +100,13 @@ ARG is the selected modules config."
 (defun modules-load (modules &optional force)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
-If not speced, the function would ask for a space separated list of modules.
+If not specified, the function would ask for a space separated list of modules.
 FORCE is a prefix argument."
   (interactive (list (modules-string-to-list (read-string "Modules: "))
                      (prefix-numeric-value current-prefix-arg)
                     ))
+  (message "[Module]: %s" modules-current-modules)
+
   (message "%s" force)
   (dolist (module modules)
     (let* ((module-name (symbol-name module))
