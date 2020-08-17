@@ -7,7 +7,7 @@ Organize your emacs config into modules.
   Let's start with a short story. When i began using emacs i was overwhelmed with the options and features it provided me, but this overwhelming was not just limited to me, it seemed to be that emacs itself was overwhelmed with these options. If you don't believe me, try making emacs do everything, all the time: mail+irc+programming+tracking+shell+organize. This may not be the most intelligent way of using emacs, in my opinion, no offence. Emacs can do everything but don't make it do everything at once. So, i started breaking down my config file into usable blocks, for example, i may want emoji support in news, chat, and mail but not programming. This package is what springed out of this need. You cannot necessarily have a usable emacs if you have to constantly run all the features it provides. It, then, makes sense to spring multiple instances for specific use cases. You can, do this manually, or you can use this package.
 
 * Changes
-  I apologies to anyone who had already started using this package for the name change.
+  I apologies to anyone who had already started using this package for the name change. There have been some changes in the name of functions, used for specific tasks.
 * Basic Usage
 Make sure the folder containing modules.el file is in your ~load-path~.
 #+begin_src emacs-lisp
@@ -52,14 +52,14 @@ emacs --config none --modules "core appearance vi"
 * Dependencies
 If a module depends on another module for some feature or service, the module can include a line which lists all the modules it needs.
 #+begin_src emacs-lisp
-(modular-config-load '(space separated list of modules))
+(modular-config-modules-load '(space separated list of modules))
 #+end_src
 A module will be loaded, only once regardless of how many times it's added within modular-config-load during startup. But when modules-load is called interactively, it will always load the module again.
 
 If you have a portion of code in one of your module which depends on another module. You can can use a when block to make sure that portion of code is not evaluated if the module is not loaded.
 
 #+BEGIN_SRC emacs-lisp
-  (when (modular-config-loaded-p 'module-name)
+  (when (modular-config-modules-loaded-p 'module-name)
     ;; Dependent Code
     )
 #+END_SRC
