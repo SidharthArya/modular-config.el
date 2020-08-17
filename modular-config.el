@@ -81,7 +81,7 @@ Use (add-to-list 'modular-config-list '(main (core appearance)))"
       (setq config (symbol-name modular-config-default)))
     (modular-config-process (intern config))
     (if modules
-      (modular-config-load (modular-config-string-to-list modules)))))
+      (modular-config-load-modules (modular-config-string-to-list modules)))))
 
 (defun modular-config-process (arg)
   "Processing various modules from the cli.
@@ -91,13 +91,13 @@ ARG is the selected modules config."
       (if (equal (car it) arg)
         (setq modules (car (cdr it)))))
     (if modules
-      (modular-config-load modules))))
+      (modular-config-load-modules modules))))
 
 (defun modular-config-string-to-list (module)
   "Convert provided MODULE from string to list."
   (mapcar #'intern (split-string module)))
 
-(defun modular-config-load (modules &optional force)
+(defun modular-config-load-modules (modules &optional force)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
 If not specified, the function would ask for a space separated list of modules.
@@ -119,7 +119,7 @@ FORCE is a prefix argument."
         (message "[Module]: Already loaded %s" module-name)
         ))))
 
-(defun modular-config-loaded-p (modules)
+(defun modular-config-modules-loaded-p (modules)
   "Check whether a list of MODULES have been loaded."
   (if (listp modules)
        (not (member nil (mapcar #'modular-config-loaded-module-p modules)))
