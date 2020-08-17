@@ -1,4 +1,4 @@
-;;; modules.el --- Organize your emacs config into small and loadable modules -*- lexical-binding: t; -*-
+;;; modular-config.el --- Organize your emacs config into small and loadable modules -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 Sidharth Arya
 
@@ -8,7 +8,7 @@
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: startup
-;; URL: https://github.com/SidharthArya/modules.el
+;; URL: https://github.com/SidharthArya/modular-config.el
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,35 +27,35 @@
 
 ;;; Commentary:
 
-;; modules.el package allows you to create custom configurations from .el files contained in a specific folder.
-;; These .el files can be loaded if needed using `modules-load` function.
+;; modular-config.el package allows you to create custom configurations from .el files contained in a specific folder.
+;; These .el files can be loaded if needed using `modular-config-load` function.
 ;; Or it can be loaded from the cli as `emacs --modules "space separated list of modules".
 ;; You can also specify module configurations
 
 ;;; Code:
 
-(defcustom modules-config-list '((none ()))
+(defcustom modular-config-list '((none ()))
   "List of module configs in the format: (module-config (list of modules))
-Use (add-to-list 'modules-config-list '(main (core appearance)))"
-  :group 'modules
+Use (add-to-list 'modular-config-list '(main (core appearance)))"
+  :group 'modular-config
   :type 'list)
 
-(defcustom modules-config-default 'none
-  "The default modules-config for Emacs."
-  :group 'modules
+(defcustom modular-config-default 'none
+  "The default modular-config for Emacs."
+  :group 'modular-config
   :type 'symbol)
 
-(defcustom modules-path (concat user-emacs-directory "lisp")
+(defcustom modular-config-path (concat user-emacs-directory "lisp")
   "Path where all the modules are located."
-  :group 'modules
+  :group 'modular-config
   :type 'string)
 
-(defcustom modules-current-modules  '()
+(defcustom modular-config-current-modules  '()
   "Path where all the modules are located."
-  :group 'modules
+  :group 'modular-config
   :type 'string)
 
-(defun modules-command-line-args-process ()
+(defun modular-config-command-line-args-process ()
   "Process the command line arguments."
   (interactive)
   (let ((config nil)
@@ -78,58 +78,58 @@ Use (add-to-list 'modules-config-list '(main (core appearance)))"
             (setq modules it)
             (setq command-line-args (delete it command-line-args))))))
     (if (equal config nil)
-      (setq config (symbol-name modules-config-default)))
-    (modules-process (intern config))
+      (setq config (symbol-name modular-config-default)))
+    (modular-config-process (intern config))
     (if modules
-      (modules-load (modules-string-to-list modules)))))
+      (modular-config-load (modular-config-string-to-list modules)))))
 
-(defun modules-process (arg)
+(defun modular-config-process (arg)
   "Processing various modules from the cli.
 ARG is the selected modules config."
   (let ((modules nil))
-    (dolist (it modules-config-list)
+    (dolist (it modular-config-list)
       (if (equal (car it) arg)
         (setq modules (car (cdr it)))))
     (if modules
-      (modules-load modules))))
+      (modular-config-load modules))))
 
-(defun modules-string-to-list (module)
+(defun modular-config-string-to-list (module)
   "Convert provided MODULE from string to list."
   (mapcar #'intern (split-string module)))
 
-(defun modules-load (modules &optional force)
+(defun modular-config-load (modules &optional force)
   "Function to load modules.
 MODULES is the list of modules to be loaded.
 If not specified, the function would ask for a space separated list of modules.
 FORCE is a prefix argument."
-  (interactive (list (modules-string-to-list (read-string "Modules: "))
+  (interactive (list (modular-config-string-to-list (read-string "Modules: "))
                      (prefix-numeric-value current-prefix-arg)
                     ))
-  (message "[Module]: %s" modules-current-modules)
+  (message "[Module]: %s" modular-config-current-modules)
 
   (message "%s" force)
   (dolist (module modules)
     (let* ((module-name (symbol-name module))
-           (module-full (concat modules-path "/" module-name)))
-      (if (or (equal force 1) (not (member module-name modules-current-modules)))
+           (module-full (concat modular-config-path "/" module-name)))
+      (if (or (equal force 1) (not (member module-name modular-config-current-modules)))
           (progn
           (load module-full)
-          (add-to-list 'modules-current-modules module-name)
+          (add-to-list 'modular-config-current-modules module-name)
           (message "[Module]: %s" module-name))
         (message "[Module]: Already loaded %s" module-name)
         ))))
 
-(defun modules-loaded-p (modules)
+(defun modular-config-loaded-p (modules)
   "Check whether a list of MODULES have been loaded."
   (if (listp modules)
-       (not (member nil (mapcar #'modules-loaded-module-p modules)))
-    (modules-loaded-module-p modules)
+       (not (member nil (mapcar #'modular-config-loaded-module-p modules)))
+    (modular-config-loaded-module-p modules)
     ))
 
-(defun modules-loaded-module-p (module)
+(defun modular-config-loaded-module-p (module)
   "Check whether a MODULE is loaded."
-      (member (symbol-name module) modules-current-modules)
+      (member (symbol-name module) modular-config-current-modules)
   )
-(provide 'modules)
+(provide 'modular-config)
 
-;;; modules.el ends here
+;;; modular-config.el ends here
