@@ -52,7 +52,7 @@ emacs --config none --modules "core appearance vi"
 * Dependencies
 If a module depends on another module for some feature or service, the module can include a line which lists all the modules it needs.
 #+begin_src emacs-lisp
-(modular-config-modules-load '(space separated list of modules))
+(modular-config-load-modules '(space separated list of modules))
 #+end_src
 A module will be loaded, only once regardless of how many times it's added within modular-config-load during startup. But when modules-load is called interactively, it will always load the module again.
 
