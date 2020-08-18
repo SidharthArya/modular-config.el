@@ -1,4 +1,4 @@
-#+TITLE: Modules.el
+#+TITLE: modular-config.el
 #+AUTHOR: Sidharth Arya
 
 Organize your emacs config into modules.
