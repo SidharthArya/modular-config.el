@@ -42,7 +42,7 @@ Make sure the folder containing modules.el file is in your ~load-path~.
       :config
       (modular-config-command-line-args-process))
   #+end_src
-Modules can also be loaded interactively by using the ~modular-config-load~ function.
+Modules can also be loaded interactively by using the ~modular-config-load-modules~ function.
 
 All the different configurations can be accessed from the command line as 
 #+begin_src sh
