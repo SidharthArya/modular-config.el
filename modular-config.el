@@ -1,4 +1,4 @@
-;;; modular-config.el --- Organize your emacs config into small and loadable modules -*- lexical-binding: t; -*-
+;;; modular-config.el --- Organize your config into small and loadable modules -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 Sidharth Arya
 
@@ -7,7 +7,7 @@
 ;; Created: 28 May 2020
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "24.3"))
-;; Keywords: startup
+;; Keywords: startup lisp tools
 ;; URL: https://github.com/SidharthArya/modular-config.el
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ Use (add-to-list 'modular-config-list '(main (core appearance)))"
   :type 'list)
 
 (defcustom modular-config-default 'none
-  "The default modular-config for Emacs."
+  "The default modular-config."
   :group 'modular-config
   :type 'symbol)
 
@@ -103,8 +103,7 @@ MODULES is the list of modules to be loaded.
 If not specified, the function would ask for a space separated list of modules.
 FORCE is a prefix argument."
   (interactive (list (modular-config-string-to-list (read-string "Modules: "))
-                     (prefix-numeric-value current-prefix-arg)
-                    ))
+                     (prefix-numeric-value current-prefix-arg)))
   (message "[Module]: %s" modular-config-current-modules)
 
   (message "%s" force)
@@ -116,20 +115,17 @@ FORCE is a prefix argument."
           (load module-full)
           (add-to-list 'modular-config-current-modules module-name)
           (message "[Module]: %s" module-name))
-        (message "[Module]: Already loaded %s" module-name)
-        ))))
+        (message "[Module]: Already loaded %s" module-name)))))
 
 (defun modular-config-modules-loaded-p (modules)
   "Check whether a list of MODULES have been loaded."
   (if (listp modules)
        (not (member nil (mapcar #'modular-config-loaded-module-p modules)))
-    (modular-config-loaded-module-p modules)
-    ))
+    (modular-config-loaded-module-p modules)))
 
 (defun modular-config-loaded-module-p (module)
   "Check whether a MODULE is loaded."
-      (member (symbol-name module) modular-config-current-modules)
-  )
+      (member (symbol-name module) modular-config-current-modules))
 (provide 'modular-config)
 
 ;;; modular-config.el ends here
