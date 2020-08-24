@@ -27,7 +27,7 @@ Make sure the folder containing modules.el file is in your ~load-path~.
 ** Use Package
  If you already use ~use-package~. Then, the config below works, although this package is not yet part of melpa so, either have it manually be in the ~load-path~, or use straight.el.
   #+begin_src emacs-lisp
-    (use-package modules
+    (use-package modular-config
       :custom
       (modular-config-list '(
                              (none ())
