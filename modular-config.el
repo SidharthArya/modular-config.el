@@ -29,9 +29,9 @@
 
 ;; modular-config.el package allows you to create custom configurations from
 ;; .el files contained in a specific folder.  These .el files can be loaded if
-;; needed using `modular-config-load` function.  Or it can be loaded from the
-;; cli as `emacs --modules "space separated list of modules".  You can also
-;; specify module configurations
+;; needed using `modular-config-load-modules` function.  Or it can be loaded
+;; from the cli as `emacs --modules "space separated list of modules".  You can
+;; also specify module configurations
 
 ;;; Code:
 
@@ -116,7 +116,7 @@ FORCE is a prefix argument."
           (load module-full)
           (add-to-list 'modular-config-current-modules module-name)
           (message "[Module]: %s" module-name))
-        (message "[Module]: Already loaded %s" module-name)))))
+       (message "[Module]: Already loaded %s" module-name)))))
 
 (defun modular-config-modules-loaded-p (modules)
   "Check whether a list of MODULES have been loaded."
