@@ -1,6 +1,7 @@
 #+TITLE: modular-config.el
 #+AUTHOR: Sidharth Arya
 [[http://stable.melpa.org/#/grails-projectile-mode][file:http://melpa.org/packages/modular-config-badge.svg]]
+
 Organize your emacs config into modules.
 
 * Synopsis
