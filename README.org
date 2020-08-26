@@ -1,6 +1,6 @@
 #+TITLE: modular-config.el
 #+AUTHOR: Sidharth Arya
-[[http://stable.melpa.org/#/modular-config][file:http://melpa.org/packages/modular-config-badge.svg]]
+[[http://melpa.org/#/modular-config][file:http://melpa.org/packages/modular-config-badge.svg]]
 
 Organize your emacs config into modules.
 
