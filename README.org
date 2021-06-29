@@ -82,3 +82,4 @@ Feel free to refer to my config at: https://github.com/SidharthArya/.emacs.d
   ;; Optionally
   (setq modular-config-separate-bookmarks-directory "~/.config/emacs-bookmarks") ;; Directory of Choice
 #+end_src
+
