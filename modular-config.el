@@ -56,6 +56,17 @@ Use (add-to-list 'modular-config-list '(main (core appearance)))"
   :group 'modular-config
   :type 'string)
 
+(defcustom modular-config-use-separate-bookmarks nil
+  "Whether to use separate bookmarks file for each config."
+  :group 'modular-config
+  :type 'symbol)
+
+(defcustom modular-config-separate-bookmarks-directory "~/.emacs.d/bookmarks.d"
+  "If `modular-config-use-separate-bookmarks` is set.
+The directory to place bookmarks in"
+  :group 'modular-config
+  :type 'symbol)
+
 (defun modular-config-command-line-args-process ()
   "Process the command line arguments."
   (interactive)
@@ -82,7 +93,12 @@ Use (add-to-list 'modular-config-list '(main (core appearance)))"
       (setq config (symbol-name modular-config-default)))
     (modular-config-process (intern config))
     (if modules
-      (modular-config-load-modules (modular-config-string-to-list modules)))))
+        (modular-config-load-modules (modular-config-string-to-list modules)))
+    (when modular-config-use-separate-bookmarks
+      (unless (file-directory-p modular-config-separate-bookmarks-directory)
+        (make-directory modular-config-separate-bookmarks-directory))
+      (require 'bookmark)
+      (setq bookmark-default-file (concat modular-config-separate-bookmarks-directory "/" config)))))
 
 (defun modular-config-process (arg)
   "Processing various modules from the cli.

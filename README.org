@@ -74,3 +74,11 @@ If you have a portion of code in one of your module which depends on another mod
   #+end_src
   
 Feel free to refer to my config at: https://github.com/SidharthArya/.emacs.d
+
+* Miscellaneous
+** Using Different Bookmarks for each config
+#+begin_src emacs-lisp
+  (setq modular-config-use-separate-bookmarks t)
+  ;; Optionally
+  (setq modular-config-separate-bookmarks-directory "~/.config/emacs-bookmarks") ;; Directory of Choice
+#+end_src
