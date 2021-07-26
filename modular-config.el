@@ -6,7 +6,7 @@
 ;; Maintainer: Sidharth Arya <sidhartharya10@gmail.com>
 ;; Created: 28 May 2020
 ;; Version: 0.5
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: startup lisp tools
 ;; URL: https://github.com/SidharthArya/modular-config.el
 
@@ -39,7 +39,10 @@
 
 (defgroup modular-config nil
   "modular-config.el package allows you to create custom configurations from
-.el files contained in a specific folder")
+.el files contained in a specific folder"
+  :group 'convenience
+  :prefix "modular-config-"
+  :link '(url-link "https://github.com/SidharthArya/modular-config.el"))
 
 (defcustom modular-config-list '((none ()))
   "List of module configs in the format: (module-config (list of modules))
@@ -114,7 +117,7 @@ ARG is the selected modules config."
     (setq modules (cl-set-difference modules (car notargs)))
     (message "notargs: %s" modules)
     (when modules
-      (setq modules (delete 'nil (mapcar 'modular-config-process-inherit-config modules)))
+      (setq modules (delete 'nil (mapcar #'modular-config-process-inherit-config modules)))
       (modular-config-load-modules modules))))
 
   (defun modular-config-process-inherit-config(module)
