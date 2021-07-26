@@ -82,5 +82,12 @@ Feel free to refer to my config at: https://github.com/SidharthArya/.emacs.d
   ;; Optionally
   (setq modular-config-separate-bookmarks-directory "~/.config/emacs-bookmarks") ;; Directory of Choice
 #+end_src
-
-
+** Inherit other config
+Since, currently the ~modular-config-list~ is written in simple list. We can inherit as follows:
+#+begin_src emacs-lisp
+  (setq modular-config-list '(
+                              (base (core appearance search selectrum help vi))
+                              (org ((base vi) dashboard org vc completion))))
+#+end_src
+~(base vi)~ here means, include everything in base config except vi module
+Credit for this feature goes to nv-elisp.
