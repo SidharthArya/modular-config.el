@@ -35,6 +35,12 @@
 
 ;;; Code:
 
+(require 'cl-seq)
+
+(defgroup modular-config nil
+  "modular-config.el package allows you to create custom configurations from
+.el files contained in a specific folder")
+
 (defcustom modular-config-list '((none ()))
   "List of module configs in the format: (module-config (list of modules))
 Use (add-to-list 'modular-config-list '(main (core appearance)))"
@@ -77,22 +83,20 @@ The directory to place bookmarks in"
         (progn
           (setq command-line-args (delete it command-line-args))
           (setq config t))
-        (if (equal config t)
-          (progn
+        (when (equal config t)
             (setq config it)
-            (setq command-line-args (delete it command-line-args)))))
+            (setq command-line-args (delete it command-line-args))))
       (if (equal it "--modules")
         (progn
           (setq command-line-args (delete it command-line-args))
           (setq modules t))
-        (if (equal modules t)
-          (progn
+        (when (equal modules t)
             (setq modules it)
-            (setq command-line-args (delete it command-line-args))))))
-    (if (equal config nil)
+            (setq command-line-args (delete it command-line-args)))))
+    (when (equal config nil)
       (setq config (symbol-name modular-config-default)))
     (modular-config-process (intern config))
-    (if modules
+    (when modules
         (modular-config-load-modules (modular-config-string-to-list modules)))
     (when modular-config-use-separate-bookmarks
       (unless (file-directory-p modular-config-separate-bookmarks-directory)
@@ -100,16 +104,27 @@ The directory to place bookmarks in"
       (require 'bookmark)
       (setq bookmark-default-file (concat modular-config-separate-bookmarks-directory "/" config)))))
 
-(defun modular-config-process (arg)
+(defun modular-config-process (arg &rest notargs)
   "Processing various modules from the cli.
 ARG is the selected modules config."
   (let ((modules nil))
     (dolist (it modular-config-list)
-      (if (equal (car it) arg)
+      (when (equal (car it) arg)
         (setq modules (car (cdr it)))))
-    (if modules
+    (setq modules (cl-set-difference modules (car notargs)))
+    (message "notargs: %s" modules)
+    (when modules
+      (setq modules (delete 'nil (mapcar 'modular-config-process-inherit-config modules)))
       (modular-config-load-modules modules))))
 
+  (defun modular-config-process-inherit-config(module)
+    "Process inherited configs"
+    (if (listp module)
+        (progn
+          (modular-config-process (car module) (cdr module))
+          nil)
+      module))
+  
 (defun modular-config-string-to-list (module)
   "Convert provided MODULE from string to list."
   (mapcar #'intern (split-string module)))
