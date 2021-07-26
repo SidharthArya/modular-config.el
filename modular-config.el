@@ -5,7 +5,7 @@
 ;; Author: Sidharth Arya <sidhartharya10@gmail.com>
 ;; Maintainer: Sidharth Arya <sidhartharya10@gmail.com>
 ;; Created: 28 May 2020
-;; Version: 0.1
+;; Version: 0.5
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: startup lisp tools
 ;; URL: https://github.com/SidharthArya/modular-config.el
@@ -67,7 +67,7 @@ Use (add-to-list 'modular-config-list '(main (core appearance)))"
   :group 'modular-config
   :type 'symbol)
 
-(defcustom modular-config-separate-bookmarks-directory "~/.emacs.d/bookmarks.d"
+(defcustom modular-config-separate-bookmarks-directory (concat user-emacs-directory "/bookmarks.d")
   "If `modular-config-use-separate-bookmarks` is set.
 The directory to place bookmarks in"
   :group 'modular-config
